@@ -8,7 +8,7 @@ const isGitUrl = require('is-git-url');
 const semver = require('semver');
 
 const gitRoot = gitInPath(); // git client for current working directory
-const storagePath = path.join('elm-stuff', 'gitdeps');
+const storagePath = path.join('node_modules');
 
 
 const args = process.argv.slice(2);
@@ -99,7 +99,8 @@ function pathify(giturl) {
   }
 
   const url = new URL(giturl);
-  return path.join(url.host, url.pathname);
+  return url.pathname.split(/\//).pop().split(/\./)[0]
+  // return path.join(url.host, url.pathname);
 }
 
 function cloneDependency(url, repoPath, ref, opts, next) {
