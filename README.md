@@ -6,7 +6,7 @@ This tool allows you to install Elm packages using git. Any git remote is suppor
 
 ## How to use
 
-Install with `npm`: `npm install -g elm-git-install`
+Install with `npm`: `npm install -g 'git+ssh://git@github.com/korutx/elm-git-install.git'`
 
 Then create an `elm-git.json` file in your elm project root directory (i.e. the same place as `elm.json`).
 
