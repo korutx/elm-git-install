@@ -23,12 +23,14 @@ if (args.length === 0) {
 function ensureDependencies() {
   const elmJson = readElmJson('');
 
-  const verificationError = verifyApplicationElmJson(elmJson);
+  const verificationError = /*verifyApplicationElmJson*/ verifyElmJson(elmJson);
   if (verificationError !== '') {
     console.log('Invalid elm.json file');
     console.log(verificationError);
     return;
   }
+  
+  
 
   const gitDeps = buildDependencyLock(elmJson);
   elmJson['locked'] = gitDeps;
@@ -225,12 +227,12 @@ function refIsBranch(branchSummary, tagSummary, ref) {
 function afterCheckout(url, repoPath, ref, opts, next) {
   const depElmJson = readElmJson(repoPath);
 
-  const verificationError = verifyPackageElmJson(depElmJson);
-  if (verificationError !== '') {
-    console.log(repoPath + ': Not valid elm json');
-    console.log(verificationError);
-    return;
-  }
+  // const verificationError = verifyApplicationElmJson(depElmJson);
+  // if (verificationError !== '') {
+  //   console.log(repoPath + ': Not valid elm json');
+  //   console.log(verificationError);
+  //   return;
+  // }
 
   opts['locked'][url] = ref;
   opts['handled'][url] = true;
