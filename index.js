@@ -70,7 +70,8 @@ function buildDependencyLock(elmJson) {
 }
 
 function buildUpdateChain(gitDeps, next) {
-  for (const url in gitDeps) {
+  
+  for (const url in gitDeps ) {
     const ref = gitDeps[url];
     const subPath = pathify(url);
     const repoPath = path.join(storagePath, subPath);
@@ -238,8 +239,10 @@ function afterCheckout(url, repoPath, ref, opts, next) {
   opts['handled'][url] = true;
   
   const depSources = ['src']; // Can packages have source directories?
-  const depGitDeps = depElmJson['git-dependencies'] || {};
-
+  const deps = depElmJson['git-dependencies'] || { direct: {}, indirect: {} }
+  // console.log(deps)
+  const depGitDeps = { ...deps.direct, ...deps.indirect } || {};
+  
   next = ((next) => {
     return (opts) => populateSources(repoPath, depSources, opts, next);
   })(next);
