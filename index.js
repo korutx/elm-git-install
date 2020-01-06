@@ -129,15 +129,17 @@ function updateDependency(url, repoPath, ref, opts, next) {
 
   resolveRef(git, url, repoPath, ref, opts, (resolvedRef) => {
     git.branch((err, branchSummary) => {
+    
       if (resolvedRef != null && branchSummary.current === resolvedRef) {
         console.log(`${name} => ${resolvedRef}`);
         afterCheckout(url, repoPath, resolvedRef, opts, next);
         return;
       }
-
+        
       // If range has been coerced to a version, we know we have it already
       if (ref !== resolvedRef && semver.valid(resolvedRef)) {
         console.log(`${name} => ${resolvedRef}`);
+        
         afterUpdate(git, url, repoPath, resolvedRef, opts, next);
         return;
       }
@@ -155,6 +157,7 @@ function updateDependency(url, repoPath, ref, opts, next) {
           });
         } else {
           console.log(`${name} => ${resolvedRef}`);
+          
           afterUpdate(git, url, repoPath, resolvedRef, opts, next);
         }
       });
@@ -190,10 +193,10 @@ function resolveRef(git, url, repoPath, ref, opts, next) {
 function afterUpdate(git, url, repoPath, ref, opts, next) {
   git.tags((_, tagSummary) => {
     git.branch((err, branchSummary) => {
-      if (refIsBranch(branchSummary, tagSummary, ref)) {
-        console.error('Branches are not supported, use semver tags or sha\'s.');
-        return;
-      }
+      // if (refIsBranch(branchSummary, tagSummary, ref)) {
+      //   console.error('Branches are not supported, use semver tags or sha\'s.');
+      //   return;
+      // }
 
       git.checkout(ref, (err) => {
         if (err) {
